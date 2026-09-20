@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <iostream>
 
-using std::cin, std::cout, std::endl, std::ostream;
+using std::cin, std::cout, std::endl, std::ostream
 
 namespace my_scope
 {
@@ -69,6 +69,16 @@ namespace my_scope
 
 int main()
 {
+    my_scope::AlgebraComplex z(2.0, 3.0);
+    cout << "Re=" << z.getRe() << endl;
+    cout << "Im=" << z.getIm() << endl;
+    z.setRe(5.0);
+    z.setIm(7.0);
+    cout << "Re=" << z.getRe() << endl;
+    cout << "Im=" << z.getIm() << endl;
+    z.print();
+    cout << endl;
+
     return 0;
 }
 
