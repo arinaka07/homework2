@@ -66,7 +66,7 @@ namespace my_scope
     }
 
     //тригонометрическая (аналогично алгебраической)
-    class TriginomComlex : public AlgebraComplex
+    class TriginomComplex : public Complex
     {
         private:
         double R;
@@ -84,6 +84,35 @@ namespace my_scope
         void print() const override;
 
     };
+    TrigonomComplex::TrigonomComplex() : R(0.0), Fi(0.0) 
+    {
+
+    }
+    TriginomComplex::TriginomComplex(double R, double Fi) : R(R), Fi(Fi)
+    {
+
+    }
+
+    double TriginomComplex::getR() const
+    {
+        return this->R;
+    }
+    double TriginomComplex::getFi() const
+    {
+        return this-> Fi;
+    }
+    void TriginomComplex::setR(double R)
+    {
+        this->R = R;
+    }
+    void TriginomComplex::setFi(double Fi)
+    {
+        this->Fi = Fi;
+    }
+    void TriginomComplex::print() const
+    {
+        cout << R << "(cos(" << Fi << ") + i * sin(" << Fi << "))";
+    }
 }
 
 
