@@ -2,7 +2,10 @@
 #include <cstdlib>
 #include <iostream>
 
-using std::cin, std::cout, std::endl, std::ostream
+using std::cin;
+using std::cout;
+using std::endl;
+using std::ostream;
 
 namespace my_scope
 {
@@ -66,7 +69,7 @@ namespace my_scope
     }
 
     //тригонометрическая (аналогично алгебраической)
-    class TriginomComplex : public Complex
+    class TrigonomComplex : public Complex
     {
         private:
         double R;
@@ -88,28 +91,28 @@ namespace my_scope
     {
 
     }
-    TriginomComplex::TriginomComplex(double R, double Fi) : R(R), Fi(Fi)
+    TrigonomComplex::TrigonomComplex(double R, double Fi) : R(R), Fi(Fi)
     {
 
     }
 
-    double TriginomComplex::getR() const
+    double TrigonomComplex::getR() const
     {
         return this->R;
     }
-    double TriginomComplex::getFi() const
+    double TrigonomComplex::getFi() const
     {
         return this-> Fi;
     }
-    void TriginomComplex::setR(double R)
+    void TrigonomComplex::setR(double R)
     {
         this->R = R;
     }
-    void TriginomComplex::setFi(double Fi)
+    void TrigonomComplex::setFi(double Fi)
     {
         this->Fi = Fi;
     }
-    void TriginomComplex::print() const
+    void TrigonomComplex::print() const
     {
         cout << R << "(cos(" << Fi << ") + i * sin(" << Fi << "))";
     }
@@ -128,14 +131,14 @@ int main()
     z.print();
     cout << endl;
 
-    my_scope::TrigonometricComplex t(5.0, 1.57);
+    my_scope::TrigonomComplex t(5.0, 1.57);
 
-    cout << "R = " << t.getR() << endl;
-    cout << "Fi = " << t.getFi() << endl;
+    cout << "R=" << t.getR() << endl;
+    cout << "Fi=" << t.getFi() << endl;
     t.setR(10.0);
     t.setFi(3.14);
-    cout << "R = " << t.getR() << endl;
-    cout << "Fi = " << t.getFi() << endl;
+    cout << "R=" << t.getR() << endl;
+    cout << "Fi=" << t.getFi() << endl;
     t.print();
     cout << endl;
 
