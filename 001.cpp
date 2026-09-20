@@ -64,6 +64,26 @@ namespace my_scope
     {
         cout << Re << " + " << Im << "i";
     }
+
+    //тригонометрическая (аналогично алгебраической)
+    class TriginomComlex : public AlgebraComplex
+    {
+        private:
+        double R;
+        double Fi;
+
+        public:
+        TrigonomComplex();
+        TrigonomComplex(double R, double Fi);
+
+        double getR() const;
+        double getFi() const;
+        void setR(double);
+        void setFi(double);
+
+        void print() const override;
+
+    };
 }
 
 
