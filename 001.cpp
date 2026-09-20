@@ -128,6 +128,17 @@ int main()
     z.print();
     cout << endl;
 
+    my_scope::TrigonometricComplex t(5.0, 1.57);
+
+    cout << "R = " << t.getR() << endl;
+    cout << "Fi = " << t.getFi() << endl;
+    t.setR(10.0);
+    t.setFi(3.14);
+    cout << "R = " << t.getR() << endl;
+    cout << "Fi = " << t.getFi() << endl;
+    t.print();
+    cout << endl;
+
     return 0;
 }
 
