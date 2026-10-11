@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+#include <cmath>
 
 using std::cin;
 using std::cout;
@@ -16,6 +17,9 @@ namespace my_scope
         public:
 
         virtual ~Complex() = default;
+        virtual double getReal() const = 0;
+        virtual double getImag() const = 0;
+
 
     };
 
@@ -33,6 +37,9 @@ namespace my_scope
         //геттеры
         double getRe() const;
         double getIm() const;
+
+        double getReal() const override;
+        double getImag() const override;
         //сеттеры
         void setRe(double);
         void setIm(double);
@@ -68,6 +75,15 @@ namespace my_scope
     double AlgebraComplex::getIm() const
     {
         return this-> Im;
+    }
+    double AlgebraComplex::getReal() const
+    {
+        return getRe();
+    }
+
+    double AlgebraComplex::getImag() const
+    {
+        return getIm();
     }
     void AlgebraComplex::setRe(double Re)
     {
@@ -121,6 +137,17 @@ namespace my_scope
         double getPhi() const;
         void setR(double);
         void setPhi(double);
+        double getReal() const override;
+        double getImag() const override;
+
+        //операторы
+        TrigonomComplex operator*(const TrigonomComplex& right) const;
+        TrigonomComplex operator-() const;
+        TrigonomComplex operator+(const TrigonomComplex& right) const;
+        TrigonomComplex operator-(const TrigonomComplex& right) const;
+        bool operator==(const TrigonomComplex& right) const;
+        TrigonomComplex& operator+=(const TrigonomComplex& right);
+        friend ostream& operator<<(ostream& os, const TrigonomComplex& c);
 
     };
     TrigonomComplex::TrigonomComplex() : R(0.0), Phi(0.0) 
@@ -147,6 +174,42 @@ namespace my_scope
     {
         this->Phi = Phi;
     }
+    double TrigonomComplex::getReal() const {
+        return R * std::cos(Phi);
+    }
+
+    double TrigonomComplex::getImag() const {
+        return R * std::sin(Phi);
+    }
+
+    TrigonomComplex TrigonomComplex::operator*(const TrigonomComplex& right) const {
+        return TrigonomComplex(
+            this->R * right.R, this->Phi + right.Phi);
+    }
+    TrigonomComplex TrigonomComplex::operator+(const TrigonomComplex& right) const {
+        double re = this->getReal() + right.getReal();
+        double im = this->getImag() + right.getImag();
+
+        double r = std::sqrt(re * re + im * im);
+        double phi = std::atan2(im, re);
+
+        return TrigonomComplex(r, phi);
+    }
+    TrigonomComplex TrigonomComplex::operator-(const TrigonomComplex& right) const {
+        return *this + (-right);
+    }
+    bool TrigonomComplex::operator==(const TrigonomComplex& right) const {
+        return this->getReal() == right.getReal()
+            && this->getImag() == right.getImag();
+    }
+    TrigonomComplex& TrigonomComplex::operator+=(const TrigonomComplex& right) {
+        *this = *this + right;
+        return *this;
+    }
+    ostream& operator<<(ostream& os, const TrigonomComplex& c) {
+        return os << "{" << c.getR() << "; " << c.getPhi() << "}";
+    }
+
 }
 
 
