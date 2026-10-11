@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
+#include <string>
 
 using std::cin;
 using std::cout;
@@ -13,7 +14,11 @@ namespace my_scope
 
     class Complex {
         public:
-        virtual void print() const = 0;
+        //функция преобразлвания числа в строку
+        virtual std::string string() const = 0;
+
+        virtual ~Complex() = default;
+
     };
 
     //алгебраический вид
@@ -24,7 +29,7 @@ namespace my_scope
         double Im;
 
         public:
-        AlgebraComplex();//конструктор по умолчанию
+        AlgebraComplex();
         AlgebraComplex(double Re, double Im);
 
         //геттеры
@@ -34,7 +39,8 @@ namespace my_scope
         void setRe(double);
         void setIm(double);
 
-        void print() const override;//функция из class comlex
+        std::string string() const override;
+
 
     };
 
@@ -63,9 +69,10 @@ namespace my_scope
     {
         this->Im = Im;
     }
-    void AlgebraComplex::print() const
+    std::string AlgebraComplex::string() const
     {
-        cout << Re << " + " << Im << "i";
+        return std::to_string(Re) + //(Im ???)
+    
     }
 
     //тригонометрическая (аналогично алгебраической)
@@ -73,25 +80,25 @@ namespace my_scope
     {
         private:
         double R;
-        double Fi;
+        double Phi;
 
         public:
         TrigonomComplex();
-        TrigonomComplex(double R, double Fi);
+        TrigonomComplex(double R, double Phi);
 
         double getR() const;
-        double getFi() const;
+        double getPhi() const;
         void setR(double);
-        void setFi(double);
+        void setPhi(double);
 
-        void print() const override;
+        std::string string() const override; //функция преобразования числа в строку
 
     };
-    TrigonomComplex::TrigonomComplex() : R(0.0), Fi(0.0) 
+    TrigonomComplex::TrigonomComplex() : R(0.0), Phi(0.0) 
     {
 
     }
-    TrigonomComplex::TrigonomComplex(double R, double Fi) : R(R), Fi(Fi)
+    TrigonomComplex::TrigonomComplex(double R, double Phi) : R(R), Phi(Phi)
     {
 
     }
@@ -100,21 +107,22 @@ namespace my_scope
     {
         return this->R;
     }
-    double TrigonomComplex::getFi() const
+    double TrigonomComplex::getPhi() const
     {
-        return this-> Fi;
+        return this-> Phi;
     }
     void TrigonomComplex::setR(double R)
     {
         this->R = R;
     }
-    void TrigonomComplex::setFi(double Fi)
+    void TrigonomComplex::setPhi(double Phi)
     {
-        this->Fi = Fi;
+        this->Phi = Phi;
     }
-    void TrigonomComplex::print() const
+    std::string TrigonomComplex::string() const
     {
-        cout << R << "(cos(" << Fi << ") + i * sin(" << Fi << "))";
+        return std::to_string(R) + "(cos(" + std::to_string(Phi) + ") + i * sin(" + std::to_string(Phi) + "))";
+
     }
 }
 
