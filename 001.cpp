@@ -1,5 +1,3 @@
-#include <cstdio>
-#include <cstdlib>
 #include <iostream>
 #include <string>
 #include <cmath>
@@ -7,7 +5,7 @@
 using std::cin;
 using std::cout;
 using std::endl;
-using std::ostream;
+
 
 namespace my_scope
 {
@@ -19,6 +17,7 @@ namespace my_scope
         virtual ~Complex() = default;
         virtual double getReal() const = 0;
         virtual double getImag() const = 0;
+        virtual std::string toString() const = 0;
 
     };
 
@@ -42,6 +41,7 @@ namespace my_scope
         //сеттеры
         void setRe(double);
         void setIm(double);
+        std::string toString() const override;
 
 
         //операторы
@@ -51,9 +51,7 @@ namespace my_scope
         AlgebraComplex operator-(const AlgebraComplex& right) const;
         AlgebraComplex& operator+=(const AlgebraComplex& right);
         bool operator==(const AlgebraComplex& right) const;
-        // Перегрузка оператора вывода на поток.
-        // Объявляем дружественной функцией, чтобы иметь доступ к приватным полям
-        friend ostream& operator<<(ostream& os, const AlgebraComplex& c);
+
 
     };
 
@@ -91,6 +89,10 @@ namespace my_scope
     {
         this->Im = Im;
     }
+    std::string AlgebraComplex::toString() const {
+        return "{" + std::to_string(Re) + "; "
+                + std::to_string(Im) + "}";
+    }
 
     AlgebraComplex AlgebraComplex::operator+(const AlgebraComplex& right) const {
         return AlgebraComplex(this->Re + right.Re, this->Im + right.Im);
@@ -115,9 +117,6 @@ namespace my_scope
     bool AlgebraComplex::operator==(const AlgebraComplex& right) const {
         return this->Re == right.Re && this->Im == right.Im;
     }
-    ostream& operator<<(ostream& os, const AlgebraComplex& c) {
-        return os << "{" << c.getRe() << "; " << c.getIm() << "}";
-    }
 
 
     //тригонометрическая (аналогично алгебраической)
@@ -138,6 +137,8 @@ namespace my_scope
         double getReal() const override;
         double getImag() const override;
 
+        std::string toString() const override;
+
         //операторы
         TrigonomComplex operator*(const TrigonomComplex& right) const;
         TrigonomComplex operator-() const;
@@ -145,7 +146,6 @@ namespace my_scope
         TrigonomComplex operator-(const TrigonomComplex& right) const;
         bool operator==(const TrigonomComplex& right) const;
         TrigonomComplex& operator+=(const TrigonomComplex& right);
-        friend ostream& operator<<(ostream& os, const TrigonomComplex& c);
 
     };
     TrigonomComplex::TrigonomComplex() : R(0.0), Phi(0.0) 
@@ -179,6 +179,10 @@ namespace my_scope
     double TrigonomComplex::getImag() const {
         return R * std::sin(Phi);
     }
+    std::string TrigonomComplex::toString() const {
+        return "{" + std::to_string(R) + "; "
+                + std::to_string(Phi) + "}";
+    }
 
     TrigonomComplex TrigonomComplex::operator*(const TrigonomComplex& right) const {
         return TrigonomComplex(
@@ -206,9 +210,6 @@ namespace my_scope
     TrigonomComplex& TrigonomComplex::operator+=(const TrigonomComplex& right) {
         *this = *this + right;
         return *this;
-    }
-    ostream& operator<<(ostream& os, const TrigonomComplex& c) {
-        return os << "{" << c.getR() << "; " << c.getPhi() << "}";
     }
     struct SquareRoots {
         AlgebraComplex first;
@@ -239,7 +240,6 @@ namespace my_scope
 
         return SquareRoots(root1, root2);
     }
-
 
 }
 
