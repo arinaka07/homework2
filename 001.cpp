@@ -14,8 +14,6 @@ namespace my_scope
 
     class Complex {
         public:
-        //функция преобразлвания числа в строку
-        virtual std::string string() const = 0;
 
         virtual ~Complex() = default;
 
@@ -41,6 +39,16 @@ namespace my_scope
 
         std::string string() const override;
 
+        //операторы
+        AlgebraComplex operator+(const AlgebraComplex& right) const;
+        AlgebraComplex operator*(const AlgebraComplex& right) const;
+        AlgebraComplex operator-() const;
+        AlgebraComplex operator-(const AlgebraComplex& right) const;
+        AlgebraComplex& operator+=(const AlgebraComplex& right);
+        bool operator==(const AlgebraComplex& right) const;
+        // Перегрузка оператора вывода на поток.
+        // Объявляем дружественной функцией, чтобы иметь доступ к приватным полям
+        friend ostream& operator<<(ostream& os, const AlgebraComplex& c);
 
     };
 
@@ -69,11 +77,34 @@ namespace my_scope
     {
         this->Im = Im;
     }
-    std::string AlgebraComplex::string() const
-    {
-        return std::to_string(Re) + //(Im ???)
-    
+
+    AlgebraComplex AlgebraComplex::operator+(const AlgebraComplex& right) const {
+        return AlgebraComplex(this->Re + right.Re, this->Im + right.Im);
     }
+    AlgebraComplex AlgebraComplex::operator*(const AlgebraComplex& right) const {
+        return AlgebraComplex(
+            this->Re * right.Re - this->Im * right.Im,
+            this->Re * right.Im + this->Im * right.Re
+        );
+    }
+    AlgebraComplex AlgebraComplex::operator-() const {
+        return AlgebraComplex(-this->Re, -this->Im);
+    }
+    AlgebraComplex AlgebraComplex::operator-(const AlgebraComplex& right) const {
+        return *this + (-right);
+    }
+    AlgebraComplex& AlgebraComplex::operator+=(const AlgebraComplex& right) {
+        this->Re += right.Re;
+        this->Im += right.Im;
+        return *this;
+    }
+    bool AlgebraComplex::operator==(const AlgebraComplex& right) const {
+        return this->Re == right.Re && this->Im == right.Im;
+    }
+    ostream& operator<<(ostream& os, const AlgebraComplex& c) {
+        return os << "{" << c.getRe() << "; " << c.getIm() << "}";
+    }
+
 
     //тригонометрическая (аналогично алгебраической)
     class TrigonomComplex : public Complex
@@ -91,8 +122,6 @@ namespace my_scope
         void setR(double);
         void setPhi(double);
 
-        std::string string() const override; //функция преобразования числа в строку
-
     };
     TrigonomComplex::TrigonomComplex() : R(0.0), Phi(0.0) 
     {
@@ -100,7 +129,6 @@ namespace my_scope
     }
     TrigonomComplex::TrigonomComplex(double R, double Phi) : R(R), Phi(Phi)
     {
-
     }
 
     double TrigonomComplex::getR() const
@@ -119,38 +147,7 @@ namespace my_scope
     {
         this->Phi = Phi;
     }
-    std::string TrigonomComplex::string() const
-    {
-        return std::to_string(R) + "(cos(" + std::to_string(Phi) + ") + i * sin(" + std::to_string(Phi) + "))";
-
-    }
 }
 
-
-int main()
-{
-    my_scope::AlgebraComplex z(2.0, 3.0);
-    cout << "Re=" << z.getRe() << endl;
-    cout << "Im=" << z.getIm() << endl;
-    z.setRe(5.0);
-    z.setIm(7.0);
-    cout << "Re=" << z.getRe() << endl;
-    cout << "Im=" << z.getIm() << endl;
-    z.print();
-    cout << endl;
-
-    my_scope::TrigonomComplex t(5.0, 1.57);
-
-    cout << "R=" << t.getR() << endl;
-    cout << "Fi=" << t.getFi() << endl;
-    t.setR(10.0);
-    t.setFi(3.14);
-    cout << "R=" << t.getR() << endl;
-    cout << "Fi=" << t.getFi() << endl;
-    t.print();
-    cout << endl;
-
-    return 0;
-}
 
 
