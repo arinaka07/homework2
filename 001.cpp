@@ -20,7 +20,6 @@ namespace my_scope
         virtual double getReal() const = 0;
         virtual double getImag() const = 0;
 
-
     };
 
     //алгебраический вид
@@ -44,7 +43,6 @@ namespace my_scope
         void setRe(double);
         void setIm(double);
 
-        std::string string() const override;
 
         //операторы
         AlgebraComplex operator+(const AlgebraComplex& right) const;
@@ -186,6 +184,9 @@ namespace my_scope
         return TrigonomComplex(
             this->R * right.R, this->Phi + right.Phi);
     }
+    TrigonomComplex TrigonomComplex::operator-() const {
+        return TrigonomComplex(this->R, this->Phi + std::acos(-1.0));
+    }
     TrigonomComplex TrigonomComplex::operator+(const TrigonomComplex& right) const {
         double re = this->getReal() + right.getReal();
         double im = this->getImag() + right.getImag();
@@ -209,6 +210,36 @@ namespace my_scope
     ostream& operator<<(ostream& os, const TrigonomComplex& c) {
         return os << "{" << c.getR() << "; " << c.getPhi() << "}";
     }
+    struct SquareRoots {
+        AlgebraComplex first;
+        AlgebraComplex second;
+
+        SquareRoots(const AlgebraComplex& first, const AlgebraComplex& second) : first(first), second(second){}
+    };
+
+    SquareRoots squareRoots(const Complex& z) {
+        double re = z.getReal();
+        double im = z.getImag();
+
+        double r = std::sqrt(re * re + im * im);
+        double phi = std::atan2(im, re);
+
+        double rootR = std::sqrt(r);
+        double rootPhi = phi / 2.0;
+
+        AlgebraComplex root1(
+            rootR * std::cos(rootPhi),
+            rootR * std::sin(rootPhi)
+        );
+
+        AlgebraComplex root2(
+            -root1.getRe(),
+            -root1.getIm()
+        );
+
+        return SquareRoots(root1, root2);
+    }
+
 
 }
 
